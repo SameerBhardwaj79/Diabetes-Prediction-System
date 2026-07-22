@@ -1,0 +1,4 @@
+Pregnancies,Glucose,Blood Pressure,Skin Thickness,Insulin,BMI,Diabetes Pedigree Function,Age,Prediction,timestamp
+1,170,100,35,10,35,0.33,30,🩺 Diabetic,2026-07-22 16:34:52.228944
+1,170,100,35,10,35,0.33,30,🩺 Diabetic,2026-07-22 16:34:53.914076
+1,170,100,35,10,35,0.33,30,🩺 Diabetic,2026-07-22 16:34:54.809216
