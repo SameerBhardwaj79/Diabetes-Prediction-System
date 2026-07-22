@@ -53,4 +53,4 @@ demo = gr.Interface(
     description="Enter patient details to predict whether the patient is Diabetic or Non-Diabetic."
 )
 
-demo.launch()
+demo.launch(server_name="0.0.0.0", server_port=7860)
