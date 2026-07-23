@@ -1,0 +1,5 @@
+venv/
+.gradio/
+.vscode/
+__pycache__/
+*.pyc
