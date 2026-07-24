@@ -2,9 +2,11 @@ import gradio as gr
 import joblib
 import numpy as np
 import matplotlib.pyplot as plt
+
 # Load model and scaler
 model = joblib.load("diabetes_model.pkl")
 scaler = joblib.load("scaler.pkl")
+
 
 def predict_diabetes(
     pregnancies,
@@ -16,6 +18,7 @@ def predict_diabetes(
     diabetes_pedigree,
     age,
 ):
+    # Input data
     data = np.array([[
         pregnancies,
         glucose,
@@ -27,7 +30,10 @@ def predict_diabetes(
         age
     ]])
 
+    # Scale data
     data = scaler.transform(data)
+
+    # Prediction
     prediction = model.predict(data)
 
     if prediction[0] == 1:
@@ -35,7 +41,10 @@ def predict_diabetes(
     else:
         result = "✅ Non-Diabetic"
 
+    # ------------------------
     # Visualization
+    # ------------------------
+
     features = [
         "Preg",
         "Glucose",
@@ -58,10 +67,27 @@ def predict_diabetes(
         age
     ]
 
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.bar(features, values)
+    fig, ax = plt.subplots(figsize=(9, 4))
+
+    bars = ax.bar(features, values)
+
     ax.set_title("Patient Parameters")
+    ax.set_ylabel("Value")
+
+    # Values on bars
+    for bar in bars:
+        h = bar.get_height()
+        ax.text(
+            bar.get_x() + bar.get_width()/2,
+            h,
+            f"{h}",
+            ha="center",
+            va="bottom",
+            fontsize=9
+        )
+
     plt.xticks(rotation=45)
+    plt.tight_layout()
 
     return result, fig
 
@@ -78,13 +104,12 @@ demo = gr.Interface(
         gr.Number(label="Diabetes Pedigree Function"),
         gr.Number(label="Age"),
     ],
- outputs=[
-    gr.Textbox(label="Prediction"),
-    gr.Plot(label="Visualization"),
-],
-title="Diabetes Prediction System",
-description="Enter patient details to predict whether the patient is Diabetic or Non-Diabetic."
-    description="Enter patient details to predict whether the patient is Diabetic or Non-Diabetic."
+    outputs=[
+        gr.Textbox(label="Prediction"),
+        gr.Plot(label="Visualization"),
+    ],
+    title="🩺 Diabetes Prediction System",
+    description="Enter patient details to predict whether the patient is Diabetic or Non-Diabetic.",
 )
 
-demo.launch(server_name="0.0.0.0", server_port=7860)
+demo.launch(inbrowser=True)
