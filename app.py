@@ -31,11 +31,12 @@ def predict_diabetes(
     prediction = model.predict(data)
 
     if prediction[0] == 1:
-        return "🩺 Diabetic"
+        result = "🩺 Diabetic"
     else:
-        return "✅ Non-Diabetic"
+        result = "✅ Non-Diabetic"
 
-features = [
+    # Visualization
+    features = [
         "Preg",
         "Glucose",
         "BP",
@@ -57,14 +58,10 @@ features = [
         age
     ]
 
-    fig, ax = plt.subplots(figsize=(8,4))
-
+    fig, ax = plt.subplots(figsize=(8, 4))
     ax.bar(features, values)
     ax.set_title("Patient Parameters")
-
     plt.xticks(rotation=45)
-
-    # -------------------------------
 
     return result, fig
 
@@ -81,11 +78,12 @@ demo = gr.Interface(
         gr.Number(label="Diabetes Pedigree Function"),
         gr.Number(label="Age"),
     ],
-   outputs=[
+ outputs=[
     gr.Textbox(label="Prediction"),
-    gr.Plot(label="Visualization")
-]
-    title="Diabetes Prediction System",
+    gr.Plot(label="Visualization"),
+],
+title="Diabetes Prediction System",
+description="Enter patient details to predict whether the patient is Diabetic or Non-Diabetic."
     description="Enter patient details to predict whether the patient is Diabetic or Non-Diabetic."
 )
 
