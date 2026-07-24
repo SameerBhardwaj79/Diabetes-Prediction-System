@@ -1,7 +1,7 @@
 import gradio as gr
 import joblib
 import numpy as np
-
+import matplotlib.pyplot as plt
 # Load model and scaler
 model = joblib.load("diabetes_model.pkl")
 scaler = joblib.load("scaler.pkl")
@@ -35,6 +35,39 @@ def predict_diabetes(
     else:
         return "✅ Non-Diabetic"
 
+features = [
+        "Preg",
+        "Glucose",
+        "BP",
+        "Skin",
+        "Insulin",
+        "BMI",
+        "DPF",
+        "Age"
+    ]
+
+    values = [
+        pregnancies,
+        glucose,
+        blood_pressure,
+        skin_thickness,
+        insulin,
+        bmi,
+        diabetes_pedigree,
+        age
+    ]
+
+    fig, ax = plt.subplots(figsize=(8,4))
+
+    ax.bar(features, values)
+    ax.set_title("Patient Parameters")
+
+    plt.xticks(rotation=45)
+
+    # -------------------------------
+
+    return result, fig
+
 
 demo = gr.Interface(
     fn=predict_diabetes,
@@ -48,7 +81,10 @@ demo = gr.Interface(
         gr.Number(label="Diabetes Pedigree Function"),
         gr.Number(label="Age"),
     ],
-    outputs=gr.Textbox(label="Prediction"),
+   outputs=[
+    gr.Textbox(label="Prediction"),
+    gr.Plot(label="Visualization")
+]
     title="Diabetes Prediction System",
     description="Enter patient details to predict whether the patient is Diabetic or Non-Diabetic."
 )
